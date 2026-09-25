@@ -1,9 +1,10 @@
 import numpy as np
-import domain 
+import domain as do
+import auxiliar as auxi
 
 class cond_initial:
   '''esse constroí a condição inicial de cada problema'''
-  def __init__(self,cond = 0, dom_esp = domain.Domain_space()):
+  def __init__(self,cond = 0, dom_esp = do.Domain_space(), auxi = auxi.aux()):
     self.cond  = cond
     '''ini = 0 ==> EDO linear
        ini = 1 ==> EDO Não linear Não stiff
@@ -90,7 +91,7 @@ class cond_initial:
     v = -(g/f)*(2*np.pi/(self.dom_esp.b - self.dom_esp.a))*np.sin(2*np.pi*x/(self.dom_esp.b - self.dom_esp.a))
     h = np.cos(2*np.pi*x/(self.dom_esp.b - self.dom_esp.a))
 
-    U_init = montar_U(u,v,h)
+    U_init = auxi.montar_U(u,v,h)
 
 
     return U_init
