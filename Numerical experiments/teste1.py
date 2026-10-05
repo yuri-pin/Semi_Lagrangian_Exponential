@@ -43,7 +43,7 @@ for j in range(3):
         u_hat_line, k_line = auxiliar_ref.FFT(u_0_line)
     
 
-        u_f = fun(x = u_hat_line,dom_tem = temp_ref, lin = lin_ref,non_lin = non_lin_ref,
+        u_f = fun(x = u_hat_line,dom_tem = temp_ref, lin = lin_semapapref,non_lin = non_lin_ref,
                 normal = normal_ref)
 
 

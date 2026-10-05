@@ -21,7 +21,8 @@ class linear_term_IE:
     self.dom_esp  = dom_esp
     self.dom_tem  = dom_tem
     self.aux = aux
-def lin(self,x):
+
+  def lin(self,x):
     if self.ini == 0:
       A = (np.array([2]))
       return A

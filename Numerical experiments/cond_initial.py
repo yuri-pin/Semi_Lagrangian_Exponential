@@ -15,7 +15,7 @@ class cond_initial:
     self.dom_esp  = dom_esp
 
 
-  def cond_ini_IE(self, x =0):
+  def cond_ini_IE(self, x =np.zeros(1)):
     '''This function will generate the initial conditions for the 
     exponential integrators numerical experiments
        cond = 0 ==> EDO linear
@@ -25,7 +25,9 @@ class cond_initial:
        cond = 4 ==> EDP advecção
        cond = 5 ==> EDP burgers
     '''
-    return 
+    if self.cond == 1:
+      x_0 = np.array([1])
+      return x_0 
 
 
   def cond_ini_SL(self,x=0):
