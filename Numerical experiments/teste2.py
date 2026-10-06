@@ -26,9 +26,9 @@ x_0 = condition_initial.cond_ini_IE()
 
 x1 = meth.Euler_Explicito(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non_lin_ref, normal= normal_ref )
 
-x2 = meth.RungeKutta22(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non_lin_ref, normal= normal_ref )
+x2 = meth.RungeKutta44(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non_lin_ref, normal= normal_ref )
 
-x3 = meth.RungeKutta44(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non_lin_ref, normal= normal_ref )
+x3 = meth.Euler_Exp_Explicito(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non_lin_ref, normal= normal_ref )
 
 x4 = meth.RK2_Exp_Explicito1(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non_lin_ref, normal= normal_ref )
 
@@ -36,8 +36,8 @@ x5 = meth.RK2_Exp_Explicito2(x = x_0,dom_tem= dom_time, lin=lin_ref, non_lin=non
 
 
 plt.plot(t,x1, label = "Euler_explicito")
-plt.plot(t,x2, label = "RK22")
-plt.plot(t,x3, label = "RK44")
+plt.plot(t,x2, label = "RK44")
+plt.plot(t,x3, label = "Euler_Exp")
 plt.plot(t,x4, label = "ETDRK2_trap")
 plt.plot(t,x5, label = "ETDRK2_mid")
 plt.legend()

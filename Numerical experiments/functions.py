@@ -30,10 +30,10 @@ class linear_term_IE:
       A = (np.array([2]))
       return A
     elif self.ini == 2:
-      A = (np.array([-1000j]))
+      A = (np.array([-1000]))
       return A
     elif self.ini == 3:
-      A = (np.array([-1000]))
+      A = (np.array([-100j]))
       return A
     elif self.ini == 4 and  (self.spec == 1 or self.spec == 2):
       N = int((len(x)//2))
@@ -100,10 +100,10 @@ class non_linear_term_IE:
       y =  np.exp(2*t)
       return y
     elif self.ini == 2:
-      y = np.exp(1j*t)
+      y = -(-1000)*np.cos(t) - np.sin(t)
       return y
     elif self.ini ==3:
-      y = -(-1000)*np.cos(t) - np.sin(t)
+      y = np.exp(1j*t)
       return y
     elif self.ini == 4 and (self.spec == 1 or self.spec == 2):
       N = len(x)

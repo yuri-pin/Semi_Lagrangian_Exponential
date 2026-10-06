@@ -25,10 +25,17 @@ class cond_initial:
        cond = 4 ==> EDP advecção
        cond = 5 ==> EDP burgers
     '''
-    if self.cond == 1:
+    if self.cond == 0:
       x_0 = np.array([1])
       return x_0 
-
+    elif self.cond == 1 :
+      x_0 = np.array([1])
+      return x_0
+    elif self.cond == 2:
+      x_0 = np.array([2])
+      return x_0
+    elif self.cond == 3:
+      x_0 = np.array([1])
 
   def cond_ini_SL(self,x=0):
     '''This function will generate the initial condition for the 

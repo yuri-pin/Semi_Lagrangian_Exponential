@@ -175,7 +175,7 @@ def phi_2(h, M):
 #########################################################################################################
 #########################################################################################################
 
-def Euler_Exp_Explicito(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
+def Euler_Exp_Explicito(x,dom_tem,lin, non_lin,normal,iter = True,tol = 10**(-5)):
   '''Essa função tem como entradas os parametros:
   x --- condição inicial
   a --- ponto inicial
@@ -194,7 +194,7 @@ def Euler_Exp_Explicito(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-
   x_old = np.copy(x)
   x_new = np.zeros_like(x)
   #esta variavel exp_lin e phi_lin são para que o exponencial não seja calculado para toda iterada
-  if lin.ini == 0 or (lin.ini == 4 ):
+  if (lin.ini == 0 and iter) or (lin.ini == 4 and iter):
     for i in range(int((b-a)/h)):
       x_total[i+1] = ExpA((i+1)*h,lin.lin(x=x))*x_total[0]
   else:
