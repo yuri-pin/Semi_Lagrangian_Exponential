@@ -32,7 +32,7 @@ del_t_list = (0.00001,
                 0.15/(2**5),
                 0.15)
 
-for j in range(1,len(init_list)):
+for j in range(len(init_list)):
     plt.figure() 
 
     init = init_list[j]
@@ -60,7 +60,7 @@ for j in range(1,len(init_list)):
         if j == 0:
             dt = del_t_list[j]
         else:
-            dt = del_t_list[j]/(2**(i+2)) 
+            dt = del_t_list[j]/(2**(i+5)) 
 
         solution = sol.sol_reference(init = init, spec = spec, cond = cond,M = 4*M_spec+1, dt = dt)
 
@@ -128,11 +128,11 @@ for j in range(1,len(init_list)):
         
 
     ### graph plots
-    plt.plot(H,valx1, label = "Euler_explicito")
-    plt.plot(H,valx2, label = "RK22")
-    plt.plot(H,valx3, label = "Euler_Exp")
-    plt.plot(H,valx4, label = "ETDRK2_trap")
-    plt.plot(H,valx5, label = "ETDRK2_mid")
+    plt.plot(H,valx1,"o-", label = "Euler_explicito")
+    plt.plot(H,valx2,"o-", label = "RK22")
+    plt.plot(H,valx3,"o-", label = "Euler_Exp")
+    plt.plot(H,valx4,"o-", label = "ETDRK2_trap")
+    plt.plot(H,valx5,"o-", label = "ETDRK2_mid")
 
     #scale
     plt.loglog()

@@ -120,10 +120,10 @@ class non_linear_term_IE:
 
       return A
     elif self.ini == 5 and self.spec == 1:
-          N = len(x)
-          A = np.zeros(N,dtype=complex)
+      N = len(x)
+      A = np.zeros(N,dtype=complex)
     
-          return A
+      return A
     elif self.ini == 6 and self.spec == 1:
       M_line = len(x)
       N_line = int((M_line-1)/2)

@@ -73,11 +73,11 @@ for j in range(len(init_list)):
 
 
     ### graph plots
-    plt.plot(H,valx1, label = "Euler_explicito")
-    plt.plot(H,valx2, label = "RK44")
-    plt.plot(H,valx3, label = "Euler_Exp")
-    plt.plot(H,valx4, label = "ETDRK2_trap")
-    plt.plot(H,valx5, label = "ETDRK2_mid")
+    plt.plot(H,valx1,"o-", label = "Euler_explicito")
+    plt.plot(H,valx2,"o-", label = "RK44")
+    plt.plot(H,valx3,"o-", label = "Euler_Exp")
+    plt.plot(H,valx4,"o-", label = "ETDRK2_trap")
+    plt.plot(H,valx5,"o-", label = "ETDRK2_mid")
 
     #scale
     plt.loglog()
