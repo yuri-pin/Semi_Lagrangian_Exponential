@@ -29,7 +29,7 @@ for j in range(len(init_list)):
     velo = 0
     cond = init
 
-    M = 15
+    M = 5
     valx1 = np.zeros(M,dtype=complex)
     valx2 = np.zeros(M,dtype=complex)
     valx3 = np.zeros(M,dtype=complex)
@@ -53,7 +53,8 @@ for j in range(len(init_list)):
 
         x_0 = condition_initial.cond_ini_IE()
 
-        x_exact = sol.func_exact(ini = init,t = dom_time.tf)
+
+        x_exact = sol.func_exact(ini = init,cond_ini= condition_initial,t = dom_time.tf)
         
         H[i] = dom_time.del_t
 

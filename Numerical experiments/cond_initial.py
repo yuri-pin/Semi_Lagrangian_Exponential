@@ -36,6 +36,14 @@ class cond_initial:
       return x_0
     elif self.cond == 3:
       x_0 = np.array([1])
+      return x_0
+    elif self.cond == 4: 
+      u_0 = np.sin(2*np.pi*x/(self.dom_esp.b - self.dom_esp.a))
+      return u_0
+    elif self.cond == 5:
+      u_0 = np.exp(np.sin(2*np.pi*x/(self.dom_esp.b - self.dom_esp.a)))
+      return u_0
+
 
   def cond_ini_SL(self,x=0):
     '''This function will generate the initial condition for the 

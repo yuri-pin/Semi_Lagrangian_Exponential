@@ -2,22 +2,28 @@ import numpy as np
 import domain as do
 import auxiliar as auxi
 
+#######################################################################################
+# here we will describe which problems we are going to implement
+# 
+##### Numerical tests for Exponential Integrators 
+###   For ODE
+# init = 0; spec = 0; velo = 0; cond = 0  ==> y^{\prime} = 2y                         y(0) = 1
+# init = 1; spec = 0; velo = 0; cond = 1  ==> y^{\prime} = 2y + exp{2t}               y(0) = 1
+# init = 2; spec = 0; velo = 0; cond = 2  ==> y^{\prime} = -1000(y - cos(t)) - sin(t) y(0) = 2
+# init = 3; spec = 0; velo = 0; cond = 3  ==> y^{\prime} = -100iy + exp{it}           y(0) = 1
+###   For PDE
+# init = 4; spec = 1; velo = 0; cond = 4  ==> y_t + \sqrt{2}y_x = 0                   y(0) = sin(2\pi x/L)
+# init = 5; spec = 1; velo = 0; cond = 5  ==> y_t + \sqrt{2}y_x = 0                   y(0) = exp{sin(2\pi x/L)}
+# init = 6; spec = 1; velo = 0; cond = 4  ==> y_t + y*y_x = 0                         y(0) = sin(2\pi x/L)
+# init = 7; spec = 1; velo = 0; cond = 4  ==> y_t + y*y_x = 0.01y_xx - y              y(0) = sin(2\pi x/L)
+#
+#
 
 class linear_term_IE:
   ''' esse constroí o termo linear da equação, seja EDO ou EDP'''
   def __init__(self,ini = 1,spec = 0, dom_esp = do.Domain_space(), dom_tem = do.Domain_temp(),aux = auxi.aux()):
     self.ini  = ini
-    '''ini = 0 ==> EDO linear
-       ini = 1 ==> EDO Não linear Não stiff
-       ini = 2 ==> EDO Não linear stiff
-       ini = 3 ==> EDO Não linear stiff oscilatório
-       ini = 4 ==> EDP advecção
-       ini = 5 ==> EDP burgers'''
     self.spec = spec
-    '''spec = 0 ==> não se usa método espectral
-       spec = 1 ==> advecção velocidade constante
-       spec = 2 ==> advecção velocidade variável
-       spec = 3 ==> burgers'''
     self.dom_esp  = dom_esp
     self.dom_tem  = dom_tem
     self.aux = aux
@@ -42,12 +48,24 @@ class linear_term_IE:
       k[1:N+1] = np.linspace(1, N, N, endpoint = True)
       k[N+1:] = -np.flip(k[1:N+1])
 
-      c = self.perf_vel(x = x)
+      c = np.sqrt(2)
 
       A = 2*np.pi*c*k*1j
 
       return A
-    elif self.ini == 5 and self.spec == 3:
+    elif self.ini == 5 and self.spec == 1:
+          N = int((len(x)//2))
+    
+          k = np.zeros(len(x), dtype = int)
+          k[1:N+1] = np.linspace(1, N, N, endpoint = True)
+          k[N+1:] = -np.flip(k[1:N+1])
+    
+          c = np.sqrt(2)
+    
+          A = 2*np.pi*c*k*1j
+    
+          return A
+    elif self.ini == 6 and self.spec == 1:
       N = int((len(x)//2))
       k = np.zeros(len(x), dtype = int)
       k[1:N+1] = np.linspace(1, N, N, endpoint = True)
@@ -58,7 +76,7 @@ class linear_term_IE:
 
       return A
 
-    elif self.ini == 6 and self.spec == 3:
+    elif self.ini == 7 and self.spec == 1:
       M_line = len(x)
       N_line = int((M_line-1)/2)
 
@@ -73,21 +91,12 @@ class linear_term_IE:
 
 
 
+
 class non_linear_term_IE:
   ''' esse constroí o termo linear da equação, seja EDO ou EDP'''
   def __init__(self,ini = 1,spec = 0, dom_esp = do.Domain_space(), dom_tem = do.Domain_temp(),aux = auxi.aux()):
     self.ini  = ini
-    '''ini = 0 ==> EDO linear
-       ini = 1 ==> EDO Não linear Não stiff
-       ini = 2 ==> EDO Não linear stiff
-       ini = 3 ==> EDO Não linear stiff oscilatório
-       ini = 4 ==> EDP advecção
-       ini = 5 ==> EDP burgers'''
     self.spec = spec
-    '''spec = 0 ==> não se usa método espectral
-       spec = 1 ==> advecção velocidade constante
-       spec = 2 ==> advecção velocidade variável
-       spec = 3 ==> burgers'''
     self.dom_esp  = dom_esp
     self.dom_tem  = dom_tem
     self.aux = aux
@@ -110,7 +119,12 @@ class non_linear_term_IE:
       A = np.zeros(N,dtype=complex)
 
       return A
-    elif self.ini == 5 and self.spec == 3:
+    elif self.ini == 5 and self.spec == 1:
+          N = len(x)
+          A = np.zeros(N,dtype=complex)
+    
+          return A
+    elif self.ini == 6 and self.spec == 1:
       M_line = len(x)
       N_line = int((M_line-1)/2)
 
@@ -128,7 +142,7 @@ class non_linear_term_IE:
 
       return A
 
-    elif self.ini == 6 and self.spec == 3:
+    elif self.ini == 7 and self.spec == 1:
       M_line = len(x)
       N_line = int((M_line-1)/2)
 
@@ -147,59 +161,25 @@ class non_linear_term_IE:
       A,k = self.aux.FFT(w_real)
 
       return A
+    
 
 
 class normal_term_IE:
   ''' esse constroí o termo linear da equação, seja EDO ou EDP'''
   def __init__(self,ini = 1,spec = 0, dom_esp = do.Domain_space(), dom_tem = do.Domain_temp(),aux = auxi.aux()):
     self.ini  = ini
-    '''ini = 0 ==> EDO linear
-       ini = 1 ==> EDO Não linear Não stiff
-       ini = 2 ==> EDO Não linear stiff
-       ini = 3 ==> EDO Não linear stiff oscilatório
-       ini = 4 ==> EDP advecção
-       ini = 5 ==> EDP burgers'''
     self.spec = spec
-    '''spec = 0 ==> não se usa método espectral
-       spec = 1 ==> advecção velocidade constante
-       spec = 2 ==> advecção velocidade variável
-       spec = 3 ==> burgers'''
     self.dom_esp  = dom_esp
     self.dom_tem  = dom_tem
     self.aux = aux
+    self.lin = linear_term_IE(ini=ini, spec=spec, dom_esp=dom_esp, dom_tem=dom_tem, aux=aux)
+    self.non_lin = non_linear_term_IE(ini=ini, spec=spec, dom_esp=dom_esp, dom_tem=dom_tem, aux=aux)
 
-  def normal(self,x:np.ndarray,t:float):
-    '''Essa função tem como entradas os parametros:
-    x --- a posição no tempo t
-    t --- tempo'''
-    if self.ini == 0: #nesse caso vamos testar que para o caso puramente linear Euler_Exp_explicito é exato
-      A = np.diag(np.array([2]))
-      y = np.dot(A,x)
-      return y
-    elif self.ini == 1: #x(t) = exp(2t)*t + 2*exp(2t)
-      A = np.diag(np.array([2]))
-      y = np.dot(A,x) + np.exp(2*t)
-      return y
-    elif self.ini == 2:  #x(t) = -(100/10001)cos(10t)-(1/10001)sin(10t) + (10101/10001)*exp(t)
-      A = np.diag(np.array([-1000j]))
-      y = np.dot(A,x) + np.exp(1j*t)
-      return y
-    elif self.ini == 3:  #x(t) = cos(t) + exp(-1000t)
-      A = np.diag(np.array([-1000]))
-      y = np.dot(A,x) - (-1000)*np.cos(t) - np.sin(t)
-      return y
-    elif self.ini == 4 and (self.spec == 1 or self.spec == 2):
-      A = self.test_exp_lin(x = x)
-      y = A*x + self.test_exp_nlin(x,t)
-      return y
-    elif self.ini == 5 and self.spec == 3:
-      A = self.test_exp_lin(x = x)
-      y = A*x + self.test_exp_nlin(x,t)
-      return y
-    elif self.ini == 6 and self.spec == 3:
-      A = self.test_exp_lin(x = x)
-      y = A*x + self.test_exp_nlin(x,t)
-      return y
+  def normal(self, x: np.ndarray, t: float):
+        '''Retorna a derivada total no tempo t: y' = L(x) + N(x, t)'''
+        A = self.lin.lin(x)
+        N = self.non_lin.nlin(x, t)
+        return A * x + N
 
 
 #######################################################################################################################
