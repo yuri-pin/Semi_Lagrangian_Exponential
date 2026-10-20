@@ -20,7 +20,10 @@ import auxiliar as auxi
 #
 
 class linear_term_IE:
-  ''' esse constroí o termo linear da equação, seja EDO ou EDP'''
+  ''' 
+  This class build the linear terms associated with the ODE and PDE, 
+  depending on the initialization
+  '''
   def __init__(self,ini = 1,spec = 0, dom_esp = do.Domain_space(), dom_tem = do.Domain_temp(),aux = auxi.aux()):
     self.ini  = ini
     self.spec = spec

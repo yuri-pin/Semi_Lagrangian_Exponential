@@ -4,12 +4,17 @@ import numpy as np
 
 
 def Euler_Explicito(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
-  '''Essa função tem como entradas os parametros:
-  x --- condição inicial
-  a --- ponto inicial
-  b --- ponto final
-  h --- passo no tempo
-  f --- função a ser aplicada'''
+  '''
+  This functions iterates the Euler method.
+
+  Parameters:
+  ----------------------------------
+  x : Initial condition 
+  a : initial time 
+  b : final time 
+  h : time step 
+  f : function
+  '''
   ############################################################
   a = dom_tem.ti
   b = dom_tem.tf
@@ -23,12 +28,17 @@ def Euler_Explicito(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
   return x_total
 
 def RungeKutta22(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
-  '''Essa função tem como entradas os parametros:
-  x --- condição inicial
-  a --- ponto inicial
-  b --- ponto final
-  h --- passo no tempo
-  f --- função a ser aplicada'''
+  '''
+  This functions iterates the second-order Runge-Kutta method.
+
+  Parameters:
+  ----------------------------------
+  x : Initial condition 
+  a : initial time 
+  b : final time 
+  h : time step 
+  f : function
+  '''
   ############################################################
   a = dom_tem.ti
   b = dom_tem.tf
@@ -44,12 +54,17 @@ def RungeKutta22(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
   return x_total
 
 def RungeKutta44(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
-  '''Essa função tem como entradas os parametros:
-  x --- condição inicial
-  a --- ponto inicial
-  b --- ponto final
-  h --- passo no tempo
-  f --- função a ser aplicada'''
+  '''
+  This functions iterates the forth-order Runge-Kutta method.
+
+  Parameters:
+  ----------------------------------
+  x : Initial condition 
+  a : initial time 
+  b : final time 
+  h : time step 
+  f : function
+  '''
   ############################################################
   a = dom_tem.ti
   b = dom_tem.tf
@@ -94,18 +109,29 @@ def RungeKutta44_SWE(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5))
 #########################################################################################################
 
 def ExpA(h,M):
-  '''essa calculadora de exponencial de matriz só é válida para matriz diagonal
-  sendo M --- diagonal da matriz que queremos encontrar a exponencial'''
+  '''
+  This function evaluates the exponential of values of an array
+
+  Parameters:
+  --------------------------------------
+  h : Time step
+  M : array 
+  '''
   EA = np.exp(h*M)
   return EA
 
 
 
 def phi_1(h, M):
-    """
-    Calcula phi_1(h,M) de forma vetorizada
-    usando índices, sem for.
-    """
+    '''
+    This function evaluates the function phi1 of an array.
+    Important function for the Exponential integrators methods.
+
+    Parameters:
+    --------------------------------------
+    h : Time step
+    M : array 
+    '''
     M = np.asarray(M, dtype=complex)
     n = M.shape[0]
 
@@ -136,10 +162,15 @@ def phi_1(h, M):
     return phi
 
 def phi_2(h, M):
-    """
-    Calcula phi_2(h,M) de forma vetorizada
-    usando índices, sem for.
-    """
+    '''
+    This function evaluates the function phi2 of an array.
+    Important function for the Exponential integrators methods.
+
+    Parameters:
+    --------------------------------------
+    h : Time step
+    M : array 
+    '''
     M = np.asarray(M, dtype=complex)
     n = M.shape[0]
 

@@ -3,17 +3,31 @@
 ## semi-lagrangian exponential integrators
 
 class Domain_temp:
-  '''This class defines the temporal domain, where we are looking 
-    for a del_t which divides the interval'''
+  '''This class defines the temporal domain'''
   def __init__(self,ti=0,tf=1,del_t=0.01):
+    """It define the temporal domain.
+    
+    Parameters:
+    -----------------
+    ti     : initial time (normally zero)
+    tf     : final time
+    del_t  : time increment 
+    """
     self.ti = ti
     self.tf = tf
     self.del_t = del_t
 
 class Domain_space:
-  '''This class defines the spacial domain, where we are looking 
-    for a del_h which divides the interval'''
+  '''This class defines the spacial domain'''
   def __init__(self,a=0,b=1,del_h=0.01):
+    """It define the temporal domain.
+        
+    Parameters:
+    -----------------
+    a      : lower bound (normally zero)
+    b      : upper bound (normally one)
+    del_h  : space increment 
+    """
     self.a = a
     self.b = b
     self.del_h = del_h

@@ -5,7 +5,25 @@ import auxiliar as auxi
 import cond_initial as cond_ini
 import methods as meth
 
+####################################################################
+#    This file aims to return the exact solutions of the ODE and PDE
+# or whether do not have an exact solution, or being to complex to 
+# determine explicitly, we will approximate the solution with a 
+# reference solution.
+
+
 def func_exact(ini,cond_ini,t,x = 0):
+    '''
+        This function return the exact solution of initial advection problems 
+    and the ODE problems.
+    
+    Parameters:
+    ----------------------------------
+    ini     :  Indicates which problem we are working in
+    cond_ini:  Indicates the initial value or initial condition of our problem
+    t       :  Is the time that you want to evaluate the function
+    x       :  Is the spatial discretization that we are working (x!=0 if PDE)
+    '''
     if ini == 0:
       return np.exp(2*t)
     elif ini == 1:
@@ -18,12 +36,29 @@ def func_exact(ini,cond_ini,t,x = 0):
       return cond_ini.cond_ini_IE( x + np.sqrt(2)*t)
 
 
-def sol_reference(init,spec,cond, M,dt):
+
+
+
+def sol_reference(init,spec,cond, M,dt,final_time = 0.15):
+    '''
+    This function aims to approximate the solution of our problem depending 
+    on the cases that we do not have the exact solution, for example in the Burger
+    equation.  
+
+    Parameters:
+    -----------------------------------------------------
+    init      :  Indicates which problem we are working in
+    spec      :  Indicates if the problem we are solving is on the spectral space or not
+    cond      :  Indicates the initial value or initial condition of our problem
+    M         :  Is the time that you want to evaluate the function
+    dt        :  Is the spatial discretization that we are working (x!=0 if PDE)
+    final_time:  Is the end point of our simulation
+    '''
     dom_esp = do.Domain_space(a = 0,b = 1,del_h = 1/M)
     
     
     #defining the time, if the \Delta t vary or not 
-    dom_time = do.Domain_temp(ti= 0, tf = 0.15,del_t = dt)
+    dom_time = do.Domain_temp(ti= 0, tf = final_time,del_t = dt)
     
     x_ref = np.arange(dom_esp.a, dom_esp.b, dom_esp.del_h)
     t = np.arange(dom_time.ti, dom_time.tf+dom_time.del_t, dom_time.del_t)

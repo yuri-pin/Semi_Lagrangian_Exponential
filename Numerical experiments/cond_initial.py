@@ -3,28 +3,14 @@ import domain as do
 import auxiliar as auxi
 
 class cond_initial:
-  '''esse constroí a condição inicial de cada problema'''
+  '''This class determines the  initial values and initial conditions for our tests cases'''
   def __init__(self,cond = 0, dom_esp = do.Domain_space(), auxi = auxi.aux()):
     self.cond  = cond
-    '''ini = 0 ==> EDO linear
-       ini = 1 ==> EDO Não linear Não stiff
-       ini = 2 ==> EDO Não linear stiff
-       ini = 3 ==> EDO Não linear stiff oscilatório
-       ini = 4 ==> EDP advecção
-       ini = 5 ==> EDP burgers'''
     self.dom_esp  = dom_esp
 
 
   def cond_ini_IE(self, x =np.zeros(1)):
-    '''This function will generate the initial conditions for the 
-    exponential integrators numerical experiments
-       cond = 0 ==> EDO linear
-       cond = 1 ==> EDO Não linear Não stiff
-       cond = 2 ==> EDO Não linear stiff
-       cond = 3 ==> EDO Não linear stiff oscilatório
-       cond = 4 ==> EDP advecção
-       cond = 5 ==> EDP burgers
-    '''
+    """This function determines the which initial condition we will impose for our problem"""
     if self.cond == 0:
       x_0 = np.array([1])
       return x_0 

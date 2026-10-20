@@ -1,39 +1,47 @@
 import numpy as np
 import domain as do
 
-## This set of funcions aim to help de construction of numerical methods, and some 
-## techinical support for the numerical methods mainly the spectral method, and the 
-## semi-Lagrangian exponential methods for the SWE
+####################################################################
+# This set of functions aim to help de construction of numerical 
+# methods, and some technical support for the numerical methods 
+# mainly the spectral method, and the semi-Lagrangian exponential 
+# methods for the SWE.
 
 class aux:
     def __init__(self,ini = 1,spec = 0, dom_esp = do.Domain_space(), dom_tem = do.Domain_temp()):
         self.ini  = ini
-        '''ini = 0 ==> EDO linear
-        ini = 1 ==> EDO Não linear Não stiff
-        ini = 2 ==> EDO Não linear stiff
-        ini = 3 ==> EDO Não linear stiff oscilatório
-        ini = 4 ==> EDP advecção
-        ini = 5 ==> EDP burgers'''
         self.spec = spec
-        '''spec = 0 ==> não se usa método espectral
-        spec = 1 ==> advecção velocidade constante
-        spec = 2 ==> advecção velocidade variável
-        spec = 3 ==> burgers'''
         self.dom_esp  = dom_esp
         self.dom_tem  = dom_tem
 
 
     def reestrut(self,n,x_i,x):
-        """This function helps us to compare two different solutions with multiple sizes.
-        that is, the vector x_i iis smaller then the x, however the posicions associated 
-        with x_i are contained in x"""
+        """
+        This function helps us to compare two different solutions with multiple sizes.
+        that is, the vector x_i is smaller then the x, however the positions associated 
+        with x_i are contained in x
+        
+        Parameters:
+        --------------------------------
+        n   : Ratio of sizes between x and x_i
+        x_i : Smaller vector contained in the x
+        x   : Larger vector that we want to compare with x_i 
+        """
         k = len(x_i)
         indices = (n)*np.arange(k)
         x_new = x[indices]
         return x_new
 
     def erro2(self, x,y,dx):
-        """This functions calculate the error between x,y functions in the space (for PDE mainly)"""
+        """
+        This functions evaluate the error between two functions in the spatial domain 
+        in the norm L^2. It is focused for the PDE comparison.
+
+        Parametes:
+        -------------------------------------
+        x,y : Functions that we want to compare
+        dx  : Spatial discretization of the problem
+        """
         err = np.sqrt(np.sum((x-y)**2)*dx)
         return err
 
@@ -43,16 +51,9 @@ class aux:
         return c
 
 
-    def func_exata(self,t):
-        """This functions are the exact solutions for the Exponential Integrators tests"""
-        if self.ini == 0:
-            return np.exp(2*t)
-        elif self.ini == 1:
-            return np.exp(2*t)*t + np.exp(2*t)
-        elif self.ini == 2:
-            return (1+(1j/1001))*np.exp(-1000j*t) - 1j*np.exp(1j*t)/1001
-        elif self.ini == 3:
-            return np.cos(t) + np.exp(-1000*t)
+    #############################################
+    #descobrir o que isso faz 
+    #############################################
 
     def transforma_em_matriz(self,h,M):
         A = (M)
@@ -62,6 +63,17 @@ class aux:
 
 
     def Q_k(self,k, f, h, g):
+        '''
+        This functions is a spectral representation of a invertible matrix 
+        given by the diagonalization process of spectral Shallow Water Equations
+
+        Parameters:
+        -----------------------------------
+        k : wavenumber
+        f : Coriolis term
+        h : mean height of fluid
+        g : gravity
+        '''
         k = 2*np.pi*k
         # Caso especial k = 0
         if k == 0:
@@ -85,6 +97,17 @@ class aux:
 
 
     def Q_minus_k(self,k, f, h, g):
+        '''
+        This functions is a spectral representation of a inverse of Q_k matrix 
+        given by the diagonalization process of spectral Shallow Water Equations
+
+        Parameters:
+        -----------------------------------
+        k : wavenumber
+        f : Coriolis term
+        h : mean height of fluid
+        g : gravity
+        '''
         k = 2*np.pi*k
         # Caso especial k = 0
         if k == 0:
@@ -109,6 +132,17 @@ class aux:
 
 
     def Lambda_k(self,k, f, h, g):
+        '''
+        This functions is a spectral representation of a diagonal matrix 
+        given by the diagonalization process of spectral Shallow Water Equation
+
+        Parameters:
+        -----------------------------------
+        k : wavenumber
+        f : Coriolis term
+        h : mean height of fluid
+        g : gravity
+        '''
         k = 2*np.pi*k
         raiz = np.sqrt(f**2 + (g*h)*k**2)
 
@@ -122,19 +156,19 @@ class aux:
 
     def A_all(self,k, h, func, f = 1, alt = 1, g = 1):
         """
-        Retorna um array contendo as matrizes
+        Retorn a matrix composed as
 
         A(k_i) = Q_k @ diag(func(h, Lambda_k)) @ Q_minus_k
 
-        para cada k_i em k.
+        for each k_i.
 
-        Parâmetros
+        Parameters:
         ----------
-        k    : array com os valores k_i
-        f    : constante f
-        alt  : valor usado no lugar de h_0
-        g    : constante g
-        h    : passo de tempo
+        k    : array which contains the k_i
+        f    : Coriolis term 
+        alt  : mean height
+        g    : gravity
+        h    : time step
         func : função (phi_1, phi_2, ExpA, etc.)
         """
 
@@ -146,9 +180,15 @@ class aux:
 
     def montar_U(self,u, v, h):
         """
-        Recebe os vetores u, v e h e retorna
+        This function compose 3 vectors in new one greater and return
 
         U = (u1, v1, h1, u2, v2, h2, ..., un, vn, hn)
+
+        Parameters:
+        -------------------------------------
+        u : velocity field in x
+        v : velocity field in y
+        h : height of the fluid
         """
 
         u = np.asarray(u)
@@ -166,11 +206,15 @@ class aux:
 
     def desmontar_U(self,U):
         """
-        Recebe
+        As a entry receive:
 
         U = (u1,v1,h1,u2,v2,h2,...,un,vn,hn)
 
-        e retorna os vetores u, v e h separadamente.
+        and return the vectors u, v e h separately.
+
+        Parameters:
+        ---------------------------------------------
+        U: composition of vectors fields and height in the shallow water equations
         """
 
         U = np.asarray(U)
@@ -188,6 +232,10 @@ class aux:
 
         return u, v, h
 
+
+    ###########################################
+    # Corrigir esses comentários
+    ###########################################
     def prod_lin_esp_SWE(self,U, A):
         """
         Aplica o operador espectral A(k_i) ao vetor físico
@@ -281,6 +329,23 @@ class aux:
 
         return U_new
 
+
+    def prod_lin_spec(self,x,M):
+        '''
+        This functions gives the product between operators in the spectral space
+        and quantities in the physical space
+
+        Parameters:
+        ----------------------------------------------
+        M : Operator in the spectral space
+        x : quantity in the physical space
+        '''
+
+        x_tilde,k_tilde = self.FFT(np.copy(x))
+        x_tilde_new = M*x_tilde
+        x_new = self.IFFT(x_tilde_new)
+        return x_new
+    
     def N(self,x,t):
         u,v,h = self.desmontar_U(x)
         n = np.zeros_like(u, dtype = complex)
@@ -299,8 +364,14 @@ class aux:
         return N
 
     def FFT(self,f):
-        '''Essa função tem como entradas os parametros:
-        f --- condição inicial'''
+        '''
+        This function gives the Fourier transformation of a given function. 
+        And returns the spectra and the wavenumbers associated 
+
+        Parameters:
+        -------------------------------------
+        f : function which will be transformated
+        '''
         M = len(f)
         f_hat = (2.*np.pi/M)*np.fft.fft(f)
 
@@ -311,17 +382,30 @@ class aux:
         return f_hat,k
 
     def IFFT(self,f):
-        '''Essa função tem como entradas os parametros:
-        f --- condição inicial'''
+        '''
+        This function gives the inverse Fourier transformation of a given function. 
+
+        Parameters:
+        -------------------------------------
+        f : function which will be transformated
+        '''
         M = len(f)
         f_hat = (M/(2.*np.pi))*np.fft.ifft(f)
         return f_hat
 
     def redef_f(self,f,k,N):
-        '''Essa função tem como entradas os parametros:
-        f --- espaço espectral a ser redefinido para evitar aliasing
-        k --- numero de onda
-        N --- dimensão espectral a ser redefinida'''
+        '''
+        This function aims to induces the anti-aliasing process
+        returning zero in the larger wavenumbers.
+        
+        [x_-2,x_-1,x_0,x_1,x_2] --> [0,x_-1,x_0,x_1,0]
+
+        Parameters:
+        ------------------------------------------
+        f : spectral components
+        k : wavenumbers associated with the spectral components
+        N : redefining number
+        '''
 
         N_red = int((N)/2) #aqui definimos a nova discretização para o espaço espactral
         k_red = np.zeros_like(k)
@@ -338,11 +422,18 @@ class aux:
         return f_red,k_red
 
     def trunc_f(self,f,k,N):
-        '''Essa função tem como entradas os parametros:
-        f --- espaço espectral a ser redefinido para evitar aliasing
-        k --- numero de onda
-        N --- dimensão espectral a ser redefinida'''
+        '''
+        This function aims to induces the anti-aliasing process
+        truncating the extremal wavenumers.
+        
+        [x_-2,x_-1,x_0,x_1,x_2] --> [x_-1,x_0,x_1]
 
+        Parameters:
+        -------------------------------------------------------
+        f : spectral components
+        k : wavenumbers associated with the spectral components
+        N : redefining number
+        '''
         N_red = int((N)/2) #aqui definimos a nova discretização para o espaço espactral
         k_trunc = np.zeros(2*N_red + 1,dtype = int)
         f_trunc = np.zeros(2*N_red + 1,dtype = complex)
