@@ -9,7 +9,7 @@ class cond_initial:
     self.dom_esp  = dom_esp
 
 
-  def cond_ini_IE(self, x =np.zeros(1)):
+  def cond_ini_general(self, x =np.zeros(1)):
     """This function determines the which initial condition we will impose for our problem"""
     if self.cond == 0:
       x_0 = np.array([1])
@@ -29,6 +29,29 @@ class cond_initial:
     elif self.cond == 5:
       u_0 = np.exp(np.sin(2*np.pi*x/(self.dom_esp.b - self.dom_esp.a)))
       return u_0
+    elif self.cond == 6:
+      f = np.exp(-0.5*(x-(0.5*self.dom_esp.a + 0.5*self.dom_esp.b))**2/0.01)
+      return f
+    elif self.cond == 7:
+      m = len(x)
+      f = np.zeros(m)
+      for i in range (m):
+        if x[i] >= 0.3 and x[i] <= 0.15 +np.sqrt(2)/4:
+          f[i] = x[i] - 0.3
+        elif x[i] >= 0.15 +np.sqrt(2)/4 and x[i] <= np.sqrt(2)/2:
+          f[i] = np.sqrt(2)/2 - x[i]
+        else:
+          f[i] = 0
+      return f
+    elif self.cond == 8:
+      m = len(x)
+      f = np.zeros(m)
+      for i in range (m):
+        if x[i] >= 0.3 and x[i] <= 0.700001:
+          f[i] = 1
+        else:
+          f[i] = 0
+      return f
 
 
   def cond_ini_SL(self,x=0):

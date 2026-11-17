@@ -33,7 +33,7 @@ def func_exact(ini,cond_ini,t,x = 0):
     elif ini == 3:
       return (1+(1j/1001))*np.exp(-1000j*t) - 1j*np.exp(1j*t)/1001
     elif ini == 4 or ini == 5:
-      return cond_ini.cond_ini_IE( x + np.sqrt(2)*t)
+      return cond_ini.cond_ini_general( x + np.sqrt(2)*t)
 
 
 
@@ -71,7 +71,7 @@ def sol_reference(init,spec,cond, M,dt,final_time = 0.15):
     
     
     #defining the initial condition
-    x_0 = condition_initial.cond_ini_IE(x = x_ref)
+    x_0 = condition_initial.cond_ini_general(x = x_ref)
     #apply the Fourier transformation
     x_hat, k_line = auxiliar_test.FFT(x_0)
     

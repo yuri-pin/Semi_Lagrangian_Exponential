@@ -91,13 +91,15 @@ for j in range(len(init_list)):
 
 
         #defining the initial condition
-        x_0 = condition_initial.cond_ini_IE(x = x_ref)
+        x_0 = condition_initial.cond_ini_general(x = x_ref)
 
         #apply the Fourier transformation
         x_hat, k_line = auxiliar_test.FFT(x_0)
 
-        
-        H[i] = dom_time.del_t
+        if j == 0:
+            H[i] = dom_esp.del_h
+        else:
+            H[i] = dom_time.del_t
 
         iter = (j != 1) #special plot for the first case
 

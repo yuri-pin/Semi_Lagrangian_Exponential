@@ -29,7 +29,7 @@ for j in range(len(init_list)):
     velo = 0
     cond = init
 
-    M = 5
+    M = 12
     valx1 = np.zeros(M,dtype=complex)
     valx2 = np.zeros(M,dtype=complex)
     valx3 = np.zeros(M,dtype=complex)
@@ -51,7 +51,7 @@ for j in range(len(init_list)):
         non_lin_ref = func.non_linear_term_IE(ini = init,spec = spec,dom_esp = dom_esp,dom_tem = dom_time, aux = auxiliar_test)
         normal_ref = func.normal_term_IE(ini = init,spec = spec,dom_esp = dom_esp,dom_tem = dom_time, aux = auxiliar_test)
 
-        x_0 = condition_initial.cond_ini_IE()
+        x_0 = condition_initial.cond_ini_general()
 
 
         x_exact = sol.func_exact(ini = init,cond_ini= condition_initial,t = dom_time.tf)
