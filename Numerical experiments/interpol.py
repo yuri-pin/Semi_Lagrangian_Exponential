@@ -28,8 +28,9 @@ def anda(p, x):
 class interpol:
   '''Essa classe determina qual interpolação será feita entre os pontos
   determinados pelo donmínio'''
-  def __init__(self,dom):
-    self.dom = dom
+  def __init__(self,dom_esp,dom_temp):
+      self.dom_esp = dom_esp
+      self.dom_temp = dom_temp
 
   def P1(self,alp,p,x):
     """Função interpoladora de Lagrange linear, sendo que

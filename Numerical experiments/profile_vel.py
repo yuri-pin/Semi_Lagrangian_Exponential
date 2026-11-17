@@ -4,9 +4,10 @@ class perf_vel:
     '''Essa classe determina qual será o perfil de velocidade
     que será usado no problema, sendo esse perfil constante ou não.'''
 
-    def __init__(self, dom, cond, ini=1):
-        self.ini = ini
-        self.dom = dom
+    def __init__(self,dom_esp,dom_temp, vel = 0):
+        self.velo = vel
+        self.dom_esp = dom_esp
+        self.dom_temp = dom_temp
 
     def profile(self, x, t=0, vel=0):
         '''
@@ -55,7 +56,7 @@ class perf_vel:
             c = (10 * np.sin(2 * np.pi * t / (self.dom.tf - self.dom.ti)) + np.sqrt(2)) * np.ones_like(x)
 
 
-        p = (c * self.dom.del_t / self.dom.del_h) // 1
-        alp = (c * self.dom.del_t / self.dom.del_h) % 1
+        p = (c * self.dom_temp.del_t / self.dom_esp.del_h) // 1
+        alp = (c * self.dom_temp.del_t / self.dom_esp.del_h) % 1
 
         return np.array([c, p, alp])

@@ -3,11 +3,12 @@ import numpy as np
 class find_departure:
   '''Essa classe determina qual será o perfil de velocidade que será usado no
   problema, sendo esse perfil constante ou não'''
-  def __init__(self,dom,cond,ini = 1):
-    self.ini = ini
-    self.dom = dom
+  def __init__(self,dom_esp,dom_temp):
+    self.dom_temp = dom_temp
+    self.dom_esp = dom_esp
 
-  def achar_departure_1(dom,inter,x,u_1,u_0, M = 5):
+
+  def achar_departure_1(self,dom_esp,dom_temp,inter,x,u_1,u_0, M = 5):
     """dom é o dominio de nosso problema.
       f é o perfil de velocidade de nosso problema.
       x são os pontos que serão usados em nosso problema.
@@ -22,16 +23,18 @@ class find_departure:
 
 
     for i in range(M):#aqui atualizo o ponto fixo
-      m = (u_extra1*dom.del_t/(2*dom.del_h))//1
-      gama = (u_extra1*dom.del_t/(2*dom.del_h))%1
+      # Use the real part of u_extra1 for spatial shifts
+      m = (u_extra1.real*self.dom_temp.del_t/(2*self.dom_esp.del_h))//1
+      gama = (u_extra1.real*self.dom_temp.del_t/(2*self.dom_esp.del_h))%1
       u_extra1 = inter(gama,m,u_extra)
 
-    p = (u_extra1*dom.del_t/(dom.del_h))//1
-    alp = (u_extra1*dom.del_t/(dom.del_h))%1
+    # Use the real part of u_extra1 for spatial shifts
+    p = (u_extra1.real*dom_temp.del_t/(dom_esp.del_h))//1
+    alp = (u_extra1.real*dom_temp.del_t/(dom_esp.del_h))%1
 
     return np.array([u_extra,p,alp])
 
-  def SETTLS(dom,inter,x,u_1,u_0, M = 5):
+  def SETTLS(self,dom_esp,dom_temp,inter,x,u_1,u_0, M = 5):
     """dom é o dominio de nosso problema.
       f é o perfil de velocidade de nosso problema.
       x são os pontos que serão usados em nosso problema.
@@ -51,10 +54,12 @@ class find_departure:
 
       settls = (2*vd_new - vd_old + va_new)*0.5
 
-      m = (settls*dom.del_t/(dom.del_h))//1
-      gama = (settls*dom.del_t/(dom.del_h))%1
+      # Use the real part of settls for spatial shifts
+      m = (settls.real*self.dom_temp.del_t/(self.dom_esp.del_h))//1
+      gama = (settls.real*self.dom_temp.del_t/(self.dom_esp.del_h))%1
 
 
-    p = (settls*dom.del_t/(dom.del_h))//1
-    alp = (settls*dom.del_t/(dom.del_h))%1
+    # Use the real part of settls for spatial shifts
+    p = (settls.real*self.dom_temp.del_t/(self.dom_esp.del_h))//1
+    alp = (settls.real*self.dom_temp.del_t/(self.dom_esp.del_h))%1
     return np.array([settls,p,alp])
