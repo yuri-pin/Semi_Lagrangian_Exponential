@@ -26,16 +26,20 @@ def adv(dom_esp, dom_temp, inter_met, find_d, inter_ad, cond, vel_0, x_i):
     return f_new
 
 
-espace = do.Domain_space(a = 0,b = 1, del_h=0.0001)
-time = do.Domain_temp(ti = 0, tf= 1, del_t = 0.001)
+espace = do.Domain_space(a = 0,b = 1, del_h=0.001)
+time = do.Domain_temp(ti = 0, tf= 1, del_t = 0.01)
 
 cond_init = cond.cond_initial(cond = 4,dom_esp= espace)
 find_depar = fd.find_departure(dom_esp=espace,dom_temp= time)
 
 inter = inte.interpol(dom_esp=espace ,dom_temp = time )
-velo = prof_vel.perf_vel(dom_esp=  espace, dom_temp= time, vel=0)
+velo = prof_vel.perf_vel(dom_esp=  espace, dom_temp= time, vel=1)
 
 x_espace = np.arange(espace.a,espace.b,espace.del_h)
+
+print(velo.profile(x = x_espace)[2][0])
+
+f_exact = cond_init.cond_ini_general(x = (x_espace - time.tf)%(espace.b - espace.a))
  
 f_f = adv(dom_esp= espace,dom_temp= time, inter_met=inter.P3,
           find_d=find_depar.SETTLS, inter_ad= inter.P3, cond= cond_init.cond_ini_general(x = x_espace),
@@ -43,6 +47,7 @@ f_f = adv(dom_esp= espace,dom_temp= time, inter_met=inter.P3,
 
 
 plt.plot(x_espace,f_f)
+plt.plot(x_espace,f_exact)
 plt.savefig("/storage/yuriassis/SE_Integrador/Numerical experiments/teste1.png", dpi =200)
 
 plt.show()

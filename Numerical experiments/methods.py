@@ -375,3 +375,29 @@ def Lawson_2ordem_a(x,dom_tem,lin, non_lin,normal,impli = False,tol = 10**(-5)):
 
     x_total[i+1] = np.dot(exp_lin, x_total[i]) + h*np.dot(exp_lin2,k2)
   return x_total
+
+
+#########################################################################################################
+#########################################################################################################
+##################################      Semi-Lagrangian functions for advection   #######################
+#########################################################################################################
+#########################################################################################################
+
+
+def adv(dom_esp, dom_temp, inter_met, find_d, inter_ad, cond, vel_0, x_i):
+    '''Advecção com velocidade variável no espaço e no tempo.'''
+    f_old = cond
+
+    u_old = vel_0(x_i, t = dom_temp.ti - dom_temp.del_t)[0]
+    u_new = vel_0(x_i, t = dom_temp.ti)[0]
+
+    for i in range(int((dom_temp.tf - dom_temp.ti) / dom_temp.del_t)):
+        u_p_alp = find_d(dom_esp, dom_temp, inter_ad, x_i, u_new, u_old, M=5)
+
+        f_new = inter_met(u_p_alp[2], u_p_alp[1], f_old)
+
+        f_old = np.copy(f_new)
+        u_old = np.copy(u_new)
+        u_new = vel_0(x_i, t = dom_temp.ti + dom_temp.del_t * (i + 1))[0]
+
+    return f_new

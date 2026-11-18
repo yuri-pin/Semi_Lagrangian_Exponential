@@ -9,7 +9,7 @@ class perf_vel:
         self.dom_esp = dom_esp
         self.dom_temp = dom_temp
 
-    def profile(self, x, t=0, vel=0):
+    def profile(self, x, t=0):
         '''
         Define o perfil de velocidade utilizado no problema.
 
@@ -32,27 +32,27 @@ class perf_vel:
             alp - parte fracionária do número de Courant
         '''
 
-        if vel == 0:
+        if self.velo == 0:
             c = np.sqrt(2) * np.ones(len(x))
 
-        elif vel == 1:
+        elif self.velo == 1:
             c = np.ones(len(x))
 
-        elif vel == 2:
+        elif self.velo== 2:
             c = 10 * np.sin(x * np.pi / (self.dom.b - self.dom.a)) + 1
 
-        elif vel == 3:
+        elif self.velo == 3:
             c = 10 * np.sin(x * np.pi / (self.dom.b - self.dom.a)) * np.exp(-t / 10) + 1
 
-        elif vel == 4:
+        elif self.velo == 4:
             c = 10 * np.sin(x * np.pi / (self.dom.b - self.dom.a)) * np.sin(
                 2 * np.pi * t / (self.dom.tf - self.dom.ti)
             )
 
-        elif vel == 5:
+        elif self.velo == 5:
             c = (10 * np.sin(2 * np.pi * t / (self.dom.tf - self.dom.ti)) + np.sqrt(1)) * np.ones_like(x)
 
-        elif vel == 6:
+        elif self.velo == 6:
             c = (10 * np.sin(2 * np.pi * t / (self.dom.tf - self.dom.ti)) + np.sqrt(2)) * np.ones_like(x)
 
 
